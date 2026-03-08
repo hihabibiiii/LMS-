@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getLessons, enrollCourse, markLessonComplete } from "../api/api";import VideoPlayer from "../components/VideoPlayer";
+import { getLessons, enrollCourse, markLessonComplete, updateLastWatched } from "../api/api";
+import VideoPlayer from "../components/VideoPlayer";
 import Navbar from "../components/Navbar";
 
 function CourseDetail() {
@@ -20,6 +21,17 @@ const handleComplete = async (lessonId) => {
   const res = await markLessonComplete(data)
 
   alert("Lesson completed")
+}
+
+const handleLessonClick = async (lesson) => {
+
+setCurrentVideo(lesson.video_url)
+
+await updateLastWatched({
+user_id:1,
+lesson_id:lesson.id
+})
+
 }
   const handleEnroll = async () => {
 
@@ -81,8 +93,7 @@ className="p-3 mb-3 rounded-lg bg-gray-700 hover:bg-blue-500 transition"
 >
 
 <div
-onClick={()=>setCurrentVideo(lesson.video_url)}
-className="cursor-pointer"
+onClick={()=>handleLessonClick(lesson)}className="cursor-pointer"
 >
 
 {lesson.title}

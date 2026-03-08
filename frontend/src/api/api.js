@@ -79,3 +79,18 @@ const res = await fetch(
 return res.json()
 
 }
+
+
+export const updateLastWatched = async (data) => {
+
+const res = await fetch("http://127.0.0.1:8000/last-watched",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify(data)
+})
+
+return res.json()
+
+}

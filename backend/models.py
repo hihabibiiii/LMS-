@@ -45,5 +45,3 @@ class Progress(Base):
     user_id = Column(Integer)
     lesson_id = Column(Integer)
     completed = Column(Boolean, default=False)
-
-   

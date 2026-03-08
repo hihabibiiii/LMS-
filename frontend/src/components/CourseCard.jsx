@@ -8,7 +8,7 @@ const navigate = useNavigate()
 
 const [progress,setProgress] = useState(0)
 
-const userId = 1   // temporary
+const userId = 1
 
 useEffect(()=>{
 
@@ -24,9 +24,15 @@ return(
 
 {/* Course Header */}
 
-<div className="h-40 bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-xl font-bold">
+<div className="h-40 bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-xl font-bold relative">
 
 {course.title}
+
+{progress === 100 && (
+<span className="absolute top-2 right-2 bg-green-500 text-xs px-2 py-1 rounded">
+Completed
+</span>
+)}
 
 </div>
 
@@ -41,6 +47,8 @@ return(
 </p>
 
 {/* Progress Bar */}
+
+{progress > 0 && (
 
 <div className="mb-4">
 
@@ -61,6 +69,8 @@ style={{ width: `${progress}%` }}
 
 </div>
 
+)}
+
 {/* Button */}
 
 <button
@@ -68,7 +78,9 @@ onClick={()=>navigate(`/course/${course.id}`)}
 className="w-full bg-blue-500 py-2 rounded-lg hover:bg-blue-600 font-semibold"
 >
 
-{progress > 0 ? "Continue Learning" : "Start Course"}
+{progress === 0 && "Start Course"}
+{progress > 0 && progress < 100 && "Continue Learning"}
+{progress === 100 && "Review Course"}
 
 </button>
 
