@@ -26,3 +26,7 @@ class LessonCreate(BaseModel):
 class ProgressCreate(BaseModel):
     user_id: int
     lesson_id: int
+
+class EnrollmentCreate(BaseModel):
+    user_id: int
+    course_id: int

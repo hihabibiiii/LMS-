@@ -2,6 +2,15 @@ from sqlalchemy import Column, Integer, String, ForeignKey, Boolean
 from sqlalchemy.orm import relationship
 from database import Base
 
+
+class Enrollment(Base):
+    __tablename__ = "enrollments"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer)
+    course_id = Column(Integer)
+
+
 class User(Base):
     __tablename__ = "users"
 
@@ -36,3 +45,5 @@ class Progress(Base):
     user_id = Column(Integer)
     lesson_id = Column(Integer)
     completed = Column(Boolean, default=False)
+
+   
