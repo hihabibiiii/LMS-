@@ -9,3 +9,50 @@ export const getLessons = async (courseId) => {
   const res = await fetch(`http://127.0.0.1:8000/lessons/${courseId}`);
   return res.json();
 };
+
+
+export const registerUser = async (data) => {
+  const res = await fetch(`${API}/register`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  });
+
+  return res.json();
+};
+
+export const loginUser = async (data) => {
+  const res = await fetch(`${API}/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  });
+
+  return res.json();
+};
+
+export const getMyCourses = async (userId) => {
+
+const res = await fetch(`http://127.0.0.1:8000/my-courses/${userId}`)
+
+return res.json()
+
+}
+
+export const enrollCourse = async (data) => {
+
+const res = await fetch("http://127.0.0.1:8000/enroll",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify(data)
+})
+
+return res.json()
+
+}
