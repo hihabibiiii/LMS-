@@ -27,3 +27,29 @@ def update_progress(data: schemas.ProgressCreate, db: Session = Depends(get_db))
     db.commit()
 
     return {"message": "Progress updated"}
+
+@router.get("/progress/{user_id}/{course_id}")
+def get_progress(user_id:int, course_id:int, db:Session = Depends(get_db)):
+
+    lessons = db.query(models.Lesson).filter(
+        models.Lesson.course_id == course_id
+    ).all()
+
+    lesson_ids = [l.id for l in lessons]
+
+    completed = db.query(models.Progress).filter(
+        models.Progress.user_id == user_id,
+        models.Progress.lesson_id.in_(lesson_ids),
+        models.Progress.completed == True
+    ).count()
+
+    total = len(lesson_ids)
+
+    progress = 0
+
+    if total > 0:
+        progress = int((completed / total) * 100)
+
+    return {
+        "progress": progress
+    }

@@ -56,3 +56,26 @@ body:JSON.stringify(data)
 return res.json()
 
 }
+
+export const markLessonComplete = async (data) => {
+
+  const res = await fetch("http://127.0.0.1:8000/progress",{
+    method:"POST",
+    headers:{
+      "Content-Type":"application/json"
+    },
+    body:JSON.stringify(data)
+  })
+
+  return res.json()
+}
+
+export const getProgress = async (userId,courseId) => {
+
+const res = await fetch(
+`http://127.0.0.1:8000/progress/${userId}/${courseId}`
+)
+
+return res.json()
+
+}
