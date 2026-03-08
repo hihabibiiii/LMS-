@@ -7,9 +7,19 @@ import auth
 
 from database import engine, SessionLocal, Base
 
+# routers import karo
+from routes import auth_routes, course_routes, lesson_routes, progress_routes
+
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
+
+# routers add karo
+app.include_router(auth_routes.router)
+app.include_router(course_routes.router)
+app.include_router(lesson_routes.router)
+app.include_router(progress_routes.router)
+
 
 def get_db():
     db = SessionLocal()

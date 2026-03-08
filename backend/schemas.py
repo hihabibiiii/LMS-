@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 
+
 class UserCreate(BaseModel):
     name: str
     email: str
@@ -14,3 +15,14 @@ class Login(BaseModel):
 class CourseCreate(BaseModel):
     title: str
     description: str
+
+
+class LessonCreate(BaseModel):
+    course_id: int
+    title: str
+    video_url: str
+
+
+class ProgressCreate(BaseModel):
+    user_id: int
+    lesson_id: int
