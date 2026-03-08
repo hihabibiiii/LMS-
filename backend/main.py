@@ -96,3 +96,4 @@ def get_courses(db: Session = Depends(get_db)):
     courses = db.query(models.Course).all()
 
     return courses
+

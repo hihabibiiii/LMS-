@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getLessons, enrollCourse, markLessonComplete, updateLastWatched } from "../api/api";
+import {  buyCourse, getLessons, enrollCourse, markLessonComplete, updateLastWatched } from "../api/api";
 import VideoPlayer from "../components/VideoPlayer";
 import Navbar from "../components/Navbar";
 
@@ -12,6 +12,7 @@ const navigate = useNavigate();
 const [lessons,setLessons] = useState([]);
 const [currentVideo,setCurrentVideo] = useState(null);
 
+const [purchased, setPurchased] = useState(false)
 const token = localStorage.getItem("token");
 
 const handleComplete = async (lessonId) => {
@@ -29,9 +30,8 @@ alert("Lesson completed")
 
 const handleLessonClick = async (lesson,index) => {
 
-// first lesson free preview
-if(index !== 0 && !token){
-alert("Please purchase the course to unlock all lessons")
+if(index !== 0 && !purchased){
+alert("Buy the course to unlock lessons")
 return
 }
 
@@ -41,6 +41,21 @@ await updateLastWatched({
 user_id:1,
 lesson_id:lesson.id
 })
+
+}
+
+const handleBuy = async () => {
+
+const data = {
+user_id:1,
+course_id:id
+}
+
+const res = await buyCourse(data)
+
+alert("Course Purchased Successfully")
+
+setPurchased(true)
 
 }
 
@@ -109,7 +124,7 @@ className="cursor-pointer flex justify-between"
 
 <span>{lesson.title}</span>
 
-{index !== 0 && (
+{index !== 0 && !purchased && (
 <span className="text-red-400 text-xs">
 🔒
 </span>
@@ -139,13 +154,16 @@ Mark Complete
 <h1 className="text-3xl font-bold">
 Course Player
 </h1>
+{!purchased && (
 
 <button
-onClick={handleEnroll}
+onClick={handleBuy}
 className="bg-yellow-500 px-6 py-2 rounded-lg hover:bg-yellow-600 font-semibold"
 >
 Buy Course
 </button>
+
+)}
 
 </div>
 

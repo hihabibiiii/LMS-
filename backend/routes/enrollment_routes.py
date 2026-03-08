@@ -42,3 +42,29 @@ def my_courses(user_id: int, db: Session = Depends(get_db)):
     ).all()
 
     return courses
+
+@router.post("/buy-course")
+def buy_course(data: schemas.EnrollmentCreate, db: Session = Depends(get_db)):
+
+    purchase = models.Purchase(
+        user_id=data.user_id,
+        course_id=data.course_id
+    )
+
+    db.add(purchase)
+    db.commit()
+
+    return {"message": "Course purchased"}
+
+@router.get("/check-purchase/{user_id}/{course_id}")
+def check_purchase(user_id:int, course_id:int, db:Session = Depends(get_db)):
+
+    purchase = db.query(models.Purchase).filter(
+        models.Purchase.user_id == user_id,
+        models.Purchase.course_id == course_id
+    ).first()
+
+    if purchase:
+        return {"purchased": True}
+
+    return {"purchased": False}
