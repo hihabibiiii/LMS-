@@ -19,13 +19,15 @@ def create_course(course: schemas.CourseCreate, db: Session = Depends(get_db)):
 
     new_course = models.Course(
         title=course.title,
-        description=course.description
+        description=course.description,
+        price=course.price
     )
 
     db.add(new_course)
     db.commit()
+    db.refresh(new_course)
 
-    return {"message": "Course created"}
+    return new_course
 
 
 @router.get("/courses")

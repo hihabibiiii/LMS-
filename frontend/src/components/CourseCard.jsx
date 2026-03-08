@@ -40,10 +40,14 @@ Completed
 
 <div className="p-5">
 
-<p className="text-gray-400 text-sm mb-4">
-
+<p className="text-gray-400 text-sm mb-3">
 {course.description}
+</p>
 
+{/* Price */}
+
+<p className="text-green-400 font-semibold mb-4">
+₹{course.price || 0}
 </p>
 
 {/* Progress Bar */}
@@ -62,9 +66,7 @@ style={{ width: `${progress}%` }}
 </div>
 
 <p className="text-xs text-gray-400 mt-1">
-
 {progress}% Complete
-
 </p>
 
 </div>

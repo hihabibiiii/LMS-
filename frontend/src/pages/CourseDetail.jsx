@@ -6,24 +6,34 @@ import Navbar from "../components/Navbar";
 
 function CourseDetail() {
 
-  const { id } = useParams();
-  const navigate = useNavigate();
+const { id } = useParams();
+const navigate = useNavigate();
 
-  const [lessons,setLessons] = useState([]);
-  const [currentVideo,setCurrentVideo] = useState(null);
+const [lessons,setLessons] = useState([]);
+const [currentVideo,setCurrentVideo] = useState(null);
+
+const token = localStorage.getItem("token");
+
 const handleComplete = async (lessonId) => {
 
-  const data = {
-    user_id:1,
-    lesson_id:lessonId
-  }
-
-  const res = await markLessonComplete(data)
-
-  alert("Lesson completed")
+const data = {
+user_id:1,
+lesson_id:lessonId
 }
 
-const handleLessonClick = async (lesson) => {
+await markLessonComplete(data)
+
+alert("Lesson completed")
+
+}
+
+const handleLessonClick = async (lesson,index) => {
+
+// first lesson free preview
+if(index !== 0 && !token){
+alert("Please purchase the course to unlock all lessons")
+return
+}
 
 setCurrentVideo(lesson.video_url)
 
@@ -33,41 +43,43 @@ lesson_id:lesson.id
 })
 
 }
-  const handleEnroll = async () => {
 
-    const token = localStorage.getItem("token")
+const handleEnroll = async () => {
 
-    if(!token){
-      alert("Please register or login first")
-      navigate("/register")
-      return
-    }
+if(!token){
+alert("Please register or login first")
+navigate("/register")
+return
+}
 
-    const data = {
-      user_id:1,
-      course_id:id
-    }
+const data = {
+user_id:1,
+course_id:id
+}
 
-    const res = await enrollCourse(data)
+const res = await enrollCourse(data)
 
-    alert(res.message)
+alert(res.message)
 
-    navigate("/dashboard")
-  }
+navigate("/dashboard")
 
-  useEffect(()=>{
+}
 
-    getLessons(id).then(data=>{
-      setLessons(data)
+useEffect(()=>{
 
-      if(data.length > 0){
-        setCurrentVideo(data[0].video_url)
-      }
-    })
+getLessons(id).then(data=>{
 
-  },[id])
+setLessons(data)
 
-  return(
+if(data.length > 0){
+setCurrentVideo(data[0].video_url)
+}
+
+})
+
+},[id])
+
+return(
 
 <div className="min-h-screen bg-gray-900 text-white">
 
@@ -75,17 +87,15 @@ lesson_id:lesson.id
 
 <div className="flex">
 
-{/* Lessons Sidebar */}
+{/* Sidebar */}
 
 <div className="w-80 bg-gray-800 p-6 border-r border-gray-700">
 
 <h2 className="text-xl font-bold mb-6 text-blue-400">
-
 Course Lessons
-
 </h2>
 
-{lessons.map(lesson => (
+{lessons.map((lesson,index) => (
 
 <div
 key={lesson.id}
@@ -93,10 +103,17 @@ className="p-3 mb-3 rounded-lg bg-gray-700 hover:bg-blue-500 transition"
 >
 
 <div
-onClick={()=>handleLessonClick(lesson)}className="cursor-pointer"
+onClick={()=>handleLessonClick(lesson,index)}
+className="cursor-pointer flex justify-between"
 >
 
-{lesson.title}
+<span>{lesson.title}</span>
+
+{index !== 0 && (
+<span className="text-red-400 text-xs">
+🔒
+</span>
+)}
 
 </div>
 
@@ -104,9 +121,7 @@ onClick={()=>handleLessonClick(lesson)}className="cursor-pointer"
 onClick={()=>handleComplete(lesson.id)}
 className="text-xs bg-green-500 px-2 py-1 rounded mt-2"
 >
-
 Mark Complete
-
 </button>
 
 </div>
@@ -127,9 +142,9 @@ Course Player
 
 <button
 onClick={handleEnroll}
-className="bg-green-500 px-6 py-2 rounded-lg hover:bg-green-600 font-semibold"
+className="bg-yellow-500 px-6 py-2 rounded-lg hover:bg-yellow-600 font-semibold"
 >
-Enroll Now
+Buy Course
 </button>
 
 </div>
@@ -146,7 +161,7 @@ Enroll Now
 
 </div>
 
-  )
+)
 
 }
 

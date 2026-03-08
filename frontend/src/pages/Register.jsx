@@ -1,11 +1,10 @@
 import { useState } from "react";
 import { registerUser } from "../api/api";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 function Register(){
 
-const navigate = useNavigate();
-
+const navigate = useNavigate()
 
 const [form,setForm] = useState({
 name:"",
@@ -13,35 +12,20 @@ email:"",
 password:""
 })
 
-const handleSubmit = async (e) => {
+const handleSubmit = async(e)=>{
 
-  e.preventDefault()
+e.preventDefault()
 
-  // empty check
-  if(!form.name || !form.email || !form.password){
-    alert("All fields are required")
-    return
-  }
+if(!form.name || !form.email || !form.password){
+alert("All fields required")
+return
+}
 
-  // email validation
-  const emailPattern = /\S+@\S+\.\S+/;
+const res = await registerUser(form)
 
-  if(!emailPattern.test(form.email)){
-    alert("Enter valid email")
-    return
-  }
+alert(res.message)
 
-  // password length
-  if(form.password.length < 6){
-    alert("Password must be at least 6 characters")
-    return
-  }
-
-  const res = await registerUser(form)
-
-  alert(res.message)
-
-  navigate("/")
+navigate("/")
 }
 
 return(
@@ -53,32 +37,49 @@ onSubmit={handleSubmit}
 className="bg-gray-800 p-8 rounded-xl w-96 text-white"
 >
 
-<h2 className="text-2xl mb-6">Register</h2>
+<h2 className="text-2xl mb-6 text-center">
+
+Create Account
+
+</h2>
 
 <input
 placeholder="Name"
-className="w-full p-2 mb-4 text-black"
+className="w-full p-2 mb-4 text-black rounded"
 onChange={(e)=>setForm({...form,name:e.target.value})}
 />
 
 <input
 placeholder="Email"
-className="w-full p-2 mb-4 text-black"
+className="w-full p-2 mb-4 text-black rounded"
 onChange={(e)=>setForm({...form,email:e.target.value})}
 />
 
 <input
 placeholder="Password"
 type="password"
-className="w-full p-2 mb-4 text-black"
+className="w-full p-2 mb-4 text-black rounded"
 onChange={(e)=>setForm({...form,password:e.target.value})}
 />
 
-<button className="bg-blue-500 w-full py-2 rounded">
+<button className="bg-blue-500 w-full py-2 rounded hover:bg-blue-600">
 
 Register
 
 </button>
+
+<p className="text-center mt-4 text-gray-400">
+
+Already have an account?
+
+<Link
+to="/login"
+className="text-blue-400 ml-1 hover:underline"
+>
+Login
+</Link>
+
+</p>
 
 </form>
 

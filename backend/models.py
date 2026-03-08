@@ -27,6 +27,7 @@ class Course(Base):
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String)
     description = Column(String)
+    price = Column(Integer)
 
 
 class Lesson(Base):
@@ -45,3 +46,4 @@ class Progress(Base):
     user_id = Column(Integer)
     lesson_id = Column(Integer)
     completed = Column(Boolean, default=False)
+

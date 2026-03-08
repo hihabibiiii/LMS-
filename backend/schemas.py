@@ -15,6 +15,7 @@ class Login(BaseModel):
 class CourseCreate(BaseModel):
     title: str
     description: str
+    price: int
 
 
 class LessonCreate(BaseModel):
@@ -30,3 +31,13 @@ class ProgressCreate(BaseModel):
 class EnrollmentCreate(BaseModel):
     user_id: int
     course_id: int
+
+
+class Course(BaseModel):
+    id: int
+    title: str
+    description: str
+    price: int
+
+    class Config:
+        from_attributes = True
