@@ -12,11 +12,7 @@ src={video}
 title="video"
 allowFullScreen
 />
-<button
-className="bg-yellow-500 px-6 py-2 rounded-lg hover:bg-yellow-600"
->
-Buy Course ₹499
-</button>
+
 </div>
 
   )

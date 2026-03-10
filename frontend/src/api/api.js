@@ -108,3 +108,31 @@ body:JSON.stringify(data)
 return res.json()
 
 }
+
+export const createCourse = async (data) => {
+
+const res = await fetch("http://127.0.0.1:8000/courses",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify(data)
+})
+
+return res.json()
+
+}
+
+export const createLesson = async (data) => {
+
+const res = await fetch("http://127.0.0.1:8000/lessons",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify(data)
+})
+
+return res.json()
+
+}
