@@ -71,7 +71,11 @@ def login(data: schemas.Login, db: Session = Depends(get_db)):
     if not auth.verify_password(data.password, user.password):
         raise HTTPException(status_code=401, detail="Invalid password")
 
-    return {"message": "Login successful"}
+    return {
+        "message": "Login successful",
+        "user_id": user.id,
+        "is_admin": user.is_admin
+    }
 
 
 @app.post("/courses")

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { registerUser } from "../api/api";
+import { registerUser, loginUser } from "../api/api";
 import { useNavigate, Link } from "react-router-dom";
 
 function Register(){
@@ -21,11 +21,35 @@ alert("All fields required")
 return
 }
 
-const res = await registerUser(form)
+try{
 
-alert(res.message)
+// Register user
+await registerUser(form)
 
-navigate("/")
+// Auto login
+const res = await loginUser({
+email: form.email,
+password: form.password
+})
+
+// Token save
+localStorage.setItem("token", res.access_token)
+localStorage.setItem("user_id", res.user_id)
+localStorage.setItem("is_admin", res.is_admin)
+
+// Redirect
+navigate("/dashboard")
+
+}catch(err){
+
+if(err.response?.data?.detail){
+alert(err.response.data.detail)
+}else{
+alert("Registration failed")
+}
+
+}
+
 }
 
 return(
@@ -38,9 +62,7 @@ className="bg-gray-800 p-8 rounded-xl w-96 text-white"
 >
 
 <h2 className="text-2xl mb-6 text-center">
-
 Create Account
-
 </h2>
 
 <input
@@ -63,9 +85,7 @@ onChange={(e)=>setForm({...form,password:e.target.value})}
 />
 
 <button className="bg-blue-500 w-full py-2 rounded hover:bg-blue-600">
-
 Register
-
 </button>
 
 <p className="text-center mt-4 text-gray-400">

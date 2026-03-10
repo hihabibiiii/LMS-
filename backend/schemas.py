@@ -41,3 +41,9 @@ class Course(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class Register(BaseModel):
+    name: str
+    email: str
+    password: str

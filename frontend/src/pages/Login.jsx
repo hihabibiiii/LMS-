@@ -3,7 +3,9 @@ import { useState } from "react";
 import { loginUser } from "../api/api";
 
 function Login(){
+
 const navigate = useNavigate();
+
 const [form,setForm] = useState({
 email:"",
 password:""
@@ -11,26 +13,40 @@ password:""
 
 const handleSubmit = async (e) => {
 
-  e.preventDefault()
+e.preventDefault()
 
-  if(!form.email || !form.password){
-    alert("Email and password required")
-    return
-  }
+if(!form.email || !form.password){
+alert("Email and password required")
+return
+}
 
-  const res = await loginUser(form)
+try{
 
-  // backend error check
-  if(res.detail){
-    alert(res.detail)
-    return
-  }
+const res = await loginUser(form)
 
-  localStorage.setItem("token", res.access_token)
+if(res.detail){
+alert(res.detail)
+return
+}
 
-  alert("Login successful")
+// Save data
+localStorage.setItem("token", res.access_token)
+localStorage.setItem("user_id", res.user_id)
+localStorage.setItem("is_admin", JSON.stringify(res.is_admin))
+// Redirect logic
+if(res.is_admin === true || res.is_admin === 1 || res.is_admin === "1"){
+navigate("/admin")
+}else{
+navigate("/dashboard")
+}
 
-  navigate("/dashboard")
+}catch(err){
+
+console.error(err)
+alert("Login failed")
+
+}
+
 }
 
 return(
@@ -42,25 +58,27 @@ onSubmit={handleSubmit}
 className="bg-gray-800 p-8 rounded-xl w-96 text-white"
 >
 
-<h2 className="text-2xl mb-6">Login</h2>
+<h2 className="text-2xl mb-6 text-center">
+Login
+</h2>
 
 <input
 placeholder="Email"
-className="w-full p-2 mb-4 text-black"
+className="w-full p-2 mb-4 text-black rounded"
 onChange={(e)=>setForm({...form,email:e.target.value})}
 />
 
 <input
 placeholder="Password"
 type="password"
-className="w-full p-2 mb-4 text-black"
+className="w-full p-2 mb-4 text-black rounded"
 onChange={(e)=>setForm({...form,password:e.target.value})}
 />
 
-<button className="bg-blue-500 w-full py-2 rounded">
-
+<button
+className="bg-blue-500 w-full py-2 rounded hover:bg-blue-600"
+>
 Login
-
 </button>
 
 </form>
