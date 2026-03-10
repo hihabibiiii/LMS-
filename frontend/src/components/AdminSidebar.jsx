@@ -1,37 +1,60 @@
-import { Link } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 function AdminSidebar(){
 
+const navigate = useNavigate()
+
+const handleLogout = () => {
+
+localStorage.removeItem("token")
+
+navigate("/login")
+
+}
+
 return(
 
-<div className="w-64 bg-gray-800 min-h-screen p-6">
+<div className="w-60 bg-gray-800 min-h-screen p-5">
 
-<h2 className="text-2xl font-bold mb-10">
+<h2 className="text-xl mb-6">
 Admin Panel
 </h2>
 
-<ul className="space-y-6">
+<ul className="space-y-4">
 
-<li>
-<Link to="/admin">Dashboard</Link>
-</li>
-
-<li>
-<Link to="/admin/create-course">Create Course</Link>
-</li>
-
-<li>
-<Link to="/admin/add-lesson">Add Lesson</Link>
-</li>
-<li>
-<Link to="/admin/courses">Manage Courses</Link>
-</li>
-<li>
-<Link to="/admin/add-lesson">Add Lesson</Link>
+<li
+className="cursor-pointer hover:text-blue-400"
+onClick={()=>navigate("/admin/dashboard")}
+>
+Dashboard
 </li>
 
-<li>
-<Link to="/admin/lessons">Manage Lessons</Link>
+<li
+className="cursor-pointer hover:text-blue-400"
+onClick={()=>navigate("/admin/courses")}
+>
+Courses
+</li>
+
+<li
+className="cursor-pointer hover:text-blue-400"
+onClick={()=>navigate("/admin/lessons")}
+>
+Lessons
+</li>
+
+<li
+className="cursor-pointer hover:text-blue-400"
+onClick={()=>navigate("/admin/add-lesson")}
+>
+Add Lesson
+</li>
+
+<li
+className="cursor-pointer text-red-400 hover:text-red-500"
+onClick={handleLogout}
+>
+Logout
 </li>
 
 </ul>
