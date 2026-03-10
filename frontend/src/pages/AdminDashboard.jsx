@@ -1,32 +1,29 @@
-import { useNavigate } from "react-router-dom"
+import AdminSidebar from "../components/AdminSidebar"
+import AdminStats from "../components/AdminStats"
 
 function AdminDashboard(){
 
-const navigate = useNavigate()
-
 return(
 
-<div className="min-h-screen bg-gray-900 text-white p-10">
+<div className="flex bg-gray-900 text-white">
 
-<h1 className="text-3xl font-bold mb-10">
+<AdminSidebar/>
+
+<div className="flex-1 p-10">
+
+<h1 className="text-4xl font-bold mb-10">
 Admin Dashboard
 </h1>
 
-<div className="flex gap-6">
+<div className="grid grid-cols-3 gap-8">
 
-<button
-onClick={()=>navigate("/admin/create-course")}
-className="bg-blue-500 px-6 py-3 rounded-lg"
->
-Create Course
-</button>
+<AdminStats title="Total Users" value="120"/>
 
-<button
-onClick={()=>navigate("/admin/add-lesson")}
-className="bg-green-500 px-6 py-3 rounded-lg"
->
-Add Lesson
-</button>
+<AdminStats title="Total Courses" value="15"/>
+
+<AdminStats title="Total Enrollments" value="340"/>
+
+</div>
 
 </div>
 

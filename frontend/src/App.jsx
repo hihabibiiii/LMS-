@@ -8,15 +8,51 @@ import Dashboard from "./pages/Dashboard"
 import AdminDashboard from "./pages/AdminDashboard"
 import CreateCourse from "./pages/CreateCourse"
 import AddLesson from "./pages/AddLesson"
-
+import AdminCourses from "./pages/AdminCourses"
+import EditCourse from "./pages/EditCourse"
 import AdminRoute from "./components/AdminRoute"
-
+import AdminLessons from "./pages/AdminLessons"
+import EditLesson from "./pages/EditLesson"
 function App(){
 
 return(
 
 <Routes>
+<Route
+path="/admin/lessons"
+element={
+<AdminRoute>
+<AdminLessons/>
+</AdminRoute>
+}
+/>
 
+<Route
+path="/admin/edit-lesson/:id"
+element={
+<AdminRoute>
+<EditLesson/>
+</AdminRoute>
+}
+/>
+<Route
+path="/admin/edit-course/:id"
+element={
+<AdminRoute>
+<EditCourse/>
+</AdminRoute>
+}
+/>
+
+
+<Route
+path="/admin/courses"
+element={
+<AdminRoute>
+<AdminCourses/>
+</AdminRoute>
+}
+/>
 <Route path="/" element={<Courses/>} />
 
 <Route path="/course/:id" element={<CourseDetail/>} />

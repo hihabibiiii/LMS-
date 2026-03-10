@@ -5,10 +5,21 @@ export const getCourses = async () => {
   return res.json();
 };
 
-export const getLessons = async (courseId) => {
-  const res = await fetch(`http://127.0.0.1:8000/lessons/${courseId}`);
-  return res.json();
-};
+export const getCourseLessons = async (courseId) => {
+
+const res = await fetch(`${API}/lessons/${courseId}`)
+
+return res.json()
+
+}
+
+export const getAllLessons = async () => {
+
+const res = await fetch(`${API}/lessons`)
+
+return res.json()
+
+}
 
 
 export const registerUser = async (data) => {
@@ -127,6 +138,63 @@ export const createLesson = async (data) => {
 
 const res = await fetch("http://127.0.0.1:8000/lessons",{
 method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify(data)
+})
+
+return res.json()
+
+}
+
+export const deleteCourse = async (id) => {
+
+const res = await fetch(`http://127.0.0.1:8000/courses/${id}`,{
+method:"DELETE"
+})
+
+return res.json()
+
+}
+
+export const updateCourse = async (id, data) => {
+
+const res = await fetch(`http://127.0.0.1:8000/courses/${id}`,{
+method:"PUT",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify(data)
+})
+
+return res.json()
+
+}
+
+
+export const getLessons = async ()=>{
+
+const res = await fetch("http://127.0.0.1:8000/lessons")
+
+return res.json()
+
+}
+
+export const deleteLesson = async (id) => {
+
+const res = await fetch(`${API}/lessons/${id}`,{
+method:"DELETE"
+})
+
+return res.json()
+
+}
+
+export const updateLesson = async (id, data) => {
+
+const res = await fetch(`http://127.0.0.1:8000/lessons/${id}`,{
+method:"PUT",
 headers:{
 "Content-Type":"application/json"
 },
