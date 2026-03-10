@@ -64,7 +64,7 @@ element={
 <Route path="/dashboard" element={<Dashboard/>}/>
 
 <Route
-path="/admin"
+path="/admin/dashboard"
 element={
 <AdminRoute>
 <AdminDashboard/>

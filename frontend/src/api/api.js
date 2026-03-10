@@ -204,3 +204,11 @@ body:JSON.stringify(data)
 return res.json()
 
 }
+
+export const getAdminStats = async () => {
+
+const res = await fetch("http://localhost:8000/admin/stats")
+
+return res.json()
+
+}

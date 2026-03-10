@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 from fastapi.middleware.cors import CORSMiddleware
+from routes import admin
 
 import models
 import schemas
@@ -33,6 +34,7 @@ app.include_router(auth_routes.router)
 app.include_router(course_routes.router)
 app.include_router(lesson_routes.router)
 app.include_router(progress_routes.router)
+app.include_router(admin.router, prefix="/admin")
 
 
 def get_db():
