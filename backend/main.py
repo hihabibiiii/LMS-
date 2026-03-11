@@ -2,6 +2,7 @@ from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 from fastapi.middleware.cors import CORSMiddleware
 from routes import admin
+from fastapi.staticfiles import StaticFiles
 
 import models
 import schemas
@@ -15,18 +16,19 @@ from routes import auth_routes, course_routes, lesson_routes, progress_routes,en
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
+app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
-
-
+origins = [
+    "http://localhost:5173"
+]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 
 # routers add karo
 app.include_router(enrollment_routes.router)
@@ -80,26 +82,4 @@ def login(data: schemas.Login, db: Session = Depends(get_db)):
     }
 
 
-@app.post("/courses")
-def create_course(course: schemas.CourseCreate, db: Session = Depends(get_db)):
-
-    new_course = models.Course(
-        title=course.title,
-        description=course.description,
-        price=course.price
-    )
-
-    db.add(new_course)
-    db.commit()
-    db.refresh(new_course)
-
-    return new_course
-
-
-@app.get("/courses")
-def get_courses(db: Session = Depends(get_db)):
-
-    courses = db.query(models.Course).all()
-
-    return courses
 

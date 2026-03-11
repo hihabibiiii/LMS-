@@ -1,14 +1,14 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import {  buyCourse, getLessons, enrollCourse, markLessonComplete, updateLastWatched } from "../api/api";
+import { checkEnrollment, buyCourse, getLessons, enrollCourse, markLessonComplete, updateLastWatched } from "../api/api";
 import VideoPlayer from "../components/VideoPlayer";
 import Navbar from "../components/Navbar";
 
 function CourseDetail() {
-
-const { id } = useParams();
-const navigate = useNavigate();
-
+    const { id } = useParams();
+    const navigate = useNavigate();
+    
+const userId = localStorage.getItem("user_id")
 const [lessons,setLessons] = useState([]);
 const [currentVideo,setCurrentVideo] = useState(null);
 
@@ -18,7 +18,7 @@ const token = localStorage.getItem("token");
 const handleComplete = async (lessonId) => {
 
 const data = {
-user_id:1,
+user_id:userId,
 lesson_id:lessonId
 }
 
@@ -38,7 +38,7 @@ return
 setCurrentVideo(lesson.video_url)
 
 await updateLastWatched({
-user_id:1,
+user_id:userId,
 lesson_id:lesson.id
 })
 
@@ -47,7 +47,7 @@ lesson_id:lesson.id
 const handleBuy = async () => {
 
 const data = {
-user_id:1,
+user_id:userId,
 course_id:id
 }
 
@@ -68,7 +68,7 @@ return
 }
 
 const data = {
-user_id:1,
+user_id:userId,
 course_id:id
 }
 
@@ -90,6 +90,10 @@ if(data.length > 0){
 setCurrentVideo(data[0].video_url)
 }
 
+})
+
+checkEnrollment(userId,id).then(data=>{
+setPurchased(data.purchased)
 })
 
 },[id])
@@ -132,13 +136,14 @@ className="cursor-pointer flex justify-between"
 
 </div>
 
+{purchased && (
 <button
 onClick={()=>handleComplete(lesson.id)}
 className="text-xs bg-green-500 px-2 py-1 rounded mt-2"
 >
 Mark Complete
 </button>
-
+)}
 </div>
 
 ))}

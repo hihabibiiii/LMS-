@@ -124,10 +124,7 @@ export const createCourse = async (data) => {
 
 const res = await fetch("http://127.0.0.1:8000/courses",{
 method:"POST",
-headers:{
-"Content-Type":"application/json"
-},
-body:JSON.stringify(data)
+body:data
 })
 
 return res.json()
@@ -208,6 +205,16 @@ return res.json()
 export const getAdminStats = async () => {
 
 const res = await fetch("http://localhost:8000/admin/stats")
+
+return res.json()
+
+}
+
+export const checkEnrollment = async (userId,courseId) => {
+
+const res = await fetch(
+`http://localhost:8000/check-enrollment/${userId}/${courseId}`
+)
 
 return res.json()
 

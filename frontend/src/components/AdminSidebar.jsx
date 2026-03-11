@@ -31,6 +31,13 @@ Dashboard
 
 <li
 className="cursor-pointer hover:text-blue-400"
+onClick={()=>navigate("/admin/create-course")}
+>
+Create Course
+</li>
+
+<li
+className="cursor-pointer hover:text-blue-400"
 onClick={()=>navigate("/admin/courses")}
 >
 Courses

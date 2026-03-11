@@ -1,8 +1,8 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form
 from sqlalchemy.orm import Session
 import models, schemas
 from database import SessionLocal
-
+import shutil
 router = APIRouter()
 
 
@@ -15,12 +15,24 @@ def get_db():
 
 
 @router.post("/courses")
-def create_course(course: schemas.CourseCreate, db: Session = Depends(get_db)):
+def create_course(
+    title: str = Form(...),
+    description: str = Form(...),
+    price: int = Form(...),
+    image: UploadFile = File(...),
+    db: Session = Depends(get_db)
+):
+
+    image_path = f"uploads/{image.filename}"
+
+    with open(image_path, "wb") as buffer:
+        shutil.copyfileobj(image.file, buffer)
 
     new_course = models.Course(
-        title=course.title,
-        description=course.description,
-        price=course.price
+        title=title,
+        description=description,
+        price=price,
+        image=image_path
     )
 
     db.add(new_course)

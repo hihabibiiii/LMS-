@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { createCourse } from "../api/api"
+import axios from "axios"
 import AdminSidebar from "../components/AdminSidebar"
 
 function CreateCourse(){
@@ -7,24 +7,27 @@ function CreateCourse(){
 const [title,setTitle] = useState("")
 const [description,setDescription] = useState("")
 const [price,setPrice] = useState("")
+const [image,setImage] = useState(null)
 
 const handleSubmit = async () => {
 
 try{
 
-const data = {
-title,
-description,
-price:Number(price)
-}
+const formData = new FormData()
 
-await createCourse(data)
+formData.append("title", title)
+formData.append("description", description)
+formData.append("price", price)
+formData.append("image", image)
+
+await axios.post("http://localhost:8000/courses", formData)
 
 alert("Course Created Successfully")
 
 setTitle("")
 setDescription("")
 setPrice("")
+setImage(null)
 
 }catch(error){
 
@@ -36,7 +39,6 @@ alert("Error creating course")
 }
 
 return(
-
 <div className="flex min-h-screen bg-gray-900 text-white">
 
 <AdminSidebar/>
@@ -68,6 +70,13 @@ value={price}
 onChange={(e)=>setPrice(e.target.value)}
 />
 
+<input
+type="file"
+accept="image/*"
+className="block mb-4"
+onChange={(e)=>setImage(e.target.files[0])}
+/>
+
 <button
 onClick={handleSubmit}
 className="bg-blue-500 px-6 py-2 rounded hover:bg-blue-600"
@@ -80,7 +89,6 @@ Create
 </div>
 
 </div>
-
 )
 
 }

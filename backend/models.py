@@ -28,7 +28,7 @@ class Course(Base):
     title = Column(String)
     description = Column(String)
     price = Column(Integer)
-
+    image = Column(String) 
 
 class Lesson(Base):
     __tablename__ = "lessons"

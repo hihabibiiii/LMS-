@@ -35,9 +35,9 @@ localStorage.setItem("user_id", res.user_id)
 localStorage.setItem("is_admin", JSON.stringify(res.is_admin))
 // Redirect logic
 if(res.is_admin === true || res.is_admin === 1 || res.is_admin === "1"){
-navigate("/admin")
+navigate("/admin/dashboard")
 }else{
-navigate("/dashboard")
+navigate("/admin")
 }
 
 }catch(err){
