@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from fastapi.middleware.cors import CORSMiddleware
 from routes import admin
 from fastapi.staticfiles import StaticFiles
-
+from routes import auth_routes
 import models
 import schemas
 import auth

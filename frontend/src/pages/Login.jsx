@@ -10,7 +10,15 @@ const [form,setForm] = useState({
 email:"",
 password:""
 })
+const handleLogout = () => {
 
+localStorage.removeItem("token")
+localStorage.removeItem("user_id")
+localStorage.removeItem("is_admin")
+
+navigate("/login")
+
+}
 const handleSubmit = async (e) => {
 
 e.preventDefault()

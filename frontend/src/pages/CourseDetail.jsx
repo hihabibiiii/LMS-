@@ -30,7 +30,7 @@ alert("Lesson completed")
 
 const handleLessonClick = async (lesson,index) => {
 
-if(index !== 0 && !purchased){
+if(!purchased && index !== 0){
 alert("Buy the course to unlock lessons")
 return
 }
@@ -46,14 +46,17 @@ lesson_id:lesson.id
 
 const handleBuy = async () => {
 
-const data = {
-user_id:userId,
-course_id:id
+const token = localStorage.getItem("token")
+
+if(!token){
+alert("Please login first")
+navigate("/login")
+return
 }
 
-const res = await buyCourse(data)
+const res = await buyCourse(id)
 
-alert("Course Purchased Successfully")
+alert(res.message)
 
 setPurchased(true)
 
@@ -82,6 +85,8 @@ navigate("/dashboard")
 
 useEffect(()=>{
 
+const userId = localStorage.getItem("user_id")
+
 getLessons(id).then(data=>{
 
 setLessons(data)
@@ -92,9 +97,17 @@ setCurrentVideo(data[0].video_url)
 
 })
 
+if(userId){
+
 checkEnrollment(userId,id).then(data=>{
 setPurchased(data.purchased)
 })
+
+}else{
+
+setPurchased(false)
+
+}
 
 },[id])
 

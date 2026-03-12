@@ -8,11 +8,11 @@ function Navbar() {
 
   const handleLogout = () => {
 
-    localStorage.removeItem("token")
+    localStorage.clear()
 
     alert("Logged out successfully")
 
-    navigate("/")
+    navigate("/login")
 
   }
 

@@ -106,14 +106,19 @@ return res.json()
 
 }
 
-export const buyCourse = async (data) => {
+export const buyCourse = async (courseId) => {
 
-const res = await fetch("http://127.0.0.1:8000/buy-course",{
-method:"POST",
-headers:{
-"Content-Type":"application/json"
-},
-body:JSON.stringify(data)
+const token = localStorage.getItem("token")
+
+const res = await fetch(`http://localhost:8000/buy-course?course_id=${courseId}`, {
+
+method: "POST",
+
+headers: {
+"Authorization": `Bearer ${token}`,
+"Content-Type": "application/json"
+}
+
 })
 
 return res.json()
