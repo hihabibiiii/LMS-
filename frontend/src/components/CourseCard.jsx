@@ -44,11 +44,13 @@ Completed
 
 <div className="p-5">
 
+<h3 className="text-lg font-semibold mb-2">
+{course.title}
+</h3>
+
 <p className="text-gray-400 text-sm mb-3">
 {course.description}
 </p>
-
-{/* Price */}
 
 <p className="text-green-400 font-semibold mb-4">
 ₹{course.price || 0}
