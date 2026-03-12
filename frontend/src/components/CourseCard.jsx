@@ -24,17 +24,21 @@ return(
 
 {/* Course Header */}
 
-<div className="h-40 bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-xl font-bold relative">
+<div className="h-40 overflow-hidden">
 
-{course.title}
+<img
+src={`http://127.0.0.1:8000/${course.image}`}
+alt={course.title}
+className="w-full h-full object-cover"
+/>
 
 {progress === 100 && (
-<span className="absolute top-2 right-2 bg-green-500 text-xs px-2 py-1 rounded">
+    <span className="absolute top-2 right-2 bg-green-500 text-xs px-2 py-1 rounded">
 Completed
 </span>
 )}
-
 </div>
+
 
 {/* Course Content */}
 

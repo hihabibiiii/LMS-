@@ -37,7 +37,7 @@ localStorage.setItem("is_admin", JSON.stringify(res.is_admin))
 if(res.is_admin === true || res.is_admin === 1 || res.is_admin === "1"){
 navigate("/admin/dashboard")
 }else{
-navigate("/admin")
+navigate("/dashboard")
 }
 
 }catch(err){
