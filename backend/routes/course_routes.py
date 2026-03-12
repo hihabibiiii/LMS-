@@ -62,19 +62,34 @@ def delete_course(course_id: int, db: Session = Depends(get_db)):
 
     return {"message": "Course deleted"}
 
+
 @router.put("/courses/{course_id}")
-def update_course(course_id: int, data: schemas.CourseCreate, db: Session = Depends(get_db)):
+def update_course(
+    course_id: int,
+    title: str = Form(...),
+    description: str = Form(...),
+    price: float = Form(...),
+    image: UploadFile = File(None),
+    db: Session = Depends(get_db)
+):
 
     course = db.query(models.Course).filter(models.Course.id == course_id).first()
 
     if not course:
-        raise HTTPException(status_code=404, detail="Course not found")
+        return {"error": "Course not found"}
 
-    course.title = data.title
-    course.description = data.description
-    course.price = data.price
+    course.title = title
+    course.description = description
+    course.price = price
+
+    if image:
+        image_path = f"uploads/{image.filename}"
+
+        with open(image_path, "wb") as buffer:
+            shutil.copyfileobj(image.file, buffer)
+
+        course.image = image_path
 
     db.commit()
-    db.refresh(course)
 
     return {"message": "Course updated successfully"}
