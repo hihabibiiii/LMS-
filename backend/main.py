@@ -3,6 +3,8 @@ from sqlalchemy.orm import Session
 from fastapi.middleware.cors import CORSMiddleware
 from routes import admin
 from fastapi.staticfiles import StaticFiles
+from routes.payment_verify import router as verify_router
+from routes.payment_routes import router as payment_router
 from routes import auth_routes
 import models
 import schemas
@@ -18,8 +20,10 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI()
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
+
 origins = [
-    "http://localhost:5173"
+    "http://localhost:5173",
+    "https://lms-nine-vert.vercel.app"
 ]
 
 app.add_middleware(
@@ -37,7 +41,8 @@ app.include_router(course_routes.router)
 app.include_router(lesson_routes.router)
 app.include_router(progress_routes.router)
 app.include_router(admin.router, prefix="/admin")
-
+app.include_router(payment_router)
+app.include_router(verify_router)
 
 def get_db():
     db = SessionLocal()

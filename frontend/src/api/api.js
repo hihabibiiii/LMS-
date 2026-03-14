@@ -12,6 +12,15 @@ const res = await fetch(`${API}/lessons/${courseId}`)
 return res.json()
 
 }
+export const getCourse = async (courseId) => {
+
+const res = await fetch(`http://127.0.0.1:8000/courses/${courseId}`)
+
+const data = await res.json()
+
+return data
+
+}
 
 export const getAllLessons = async () => {
 

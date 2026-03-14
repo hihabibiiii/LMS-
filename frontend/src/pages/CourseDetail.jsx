@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { checkEnrollment, buyCourse, getLessons, enrollCourse, markLessonComplete, updateLastWatched } from "../api/api";
+import { checkEnrollment,  getLessons, enrollCourse, markLessonComplete, updateLastWatched } from "../api/api";
+import { getCourse } from "../api/api"
 import VideoPlayer from "../components/VideoPlayer";
 import Navbar from "../components/Navbar";
 
@@ -11,7 +12,7 @@ function CourseDetail() {
 const userId = localStorage.getItem("user_id")
 const [lessons,setLessons] = useState([]);
 const [currentVideo,setCurrentVideo] = useState(null);
-
+const [price,setPrice] = useState(0)
 const [purchased, setPurchased] = useState(false)
 const token = localStorage.getItem("token");
 
@@ -44,9 +45,8 @@ lesson_id:lesson.id
 
 }
 
-const handleBuy = async () => {
 
-const token = localStorage.getItem("token")
+const handlePayment = async () => {
 
 if(!token){
 alert("Please login first")
@@ -54,14 +54,73 @@ navigate("/login")
 return
 }
 
-const res = await buyCourse(id)
+try{
 
-alert(res.message)
+const res = await fetch("http://127.0.0.1:8000/create-order",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+amount:price
+})
+})
+const order = await res.json()
+
+const options = {
+key:"rzp_test_SQz2aqKjJK8fAd",
+amount:order.amount,
+currency:"INR",
+order_id:order.id,
+name:"Course Purchase",
+
+handler: async function (response) {
+
+const verifyRes = await fetch("http://127.0.0.1:8000/verify-payment",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+razorpay_order_id: response.razorpay_order_id,
+razorpay_payment_id: response.razorpay_payment_id,
+razorpay_signature: response.razorpay_signature
+})
+})
+
+const data = await verifyRes.json()
+
+if(data.status === "success"){
+
+await enrollCourse({
+user_id:userId,
+course_id:id
+})
 
 setPurchased(true)
 
+alert("Payment successful")
+
+}else{
+alert("Payment verification failed")
 }
 
+}
+
+}
+console.log(window.Razorpay)
+
+const rzp = new window.Razorpay(options)
+rzp.open()
+
+}catch(error){
+
+console.log(error)
+alert("Payment failed")
+
+}
+
+}
 const handleEnroll = async () => {
 
 if(!token){
@@ -86,7 +145,9 @@ navigate("/dashboard")
 useEffect(()=>{
 
 const userId = localStorage.getItem("user_id")
-
+getCourse(id).then(data=>{
+setPrice(data.price)
+})
 getLessons(id).then(data=>{
 
 setLessons(data)
@@ -175,7 +236,7 @@ Course Player
 {!purchased && (
 
 <button
-onClick={handleBuy}
+onClick={handlePayment}
 className="bg-yellow-500 px-6 py-2 rounded-lg hover:bg-yellow-600 font-semibold"
 >
 Buy Course
