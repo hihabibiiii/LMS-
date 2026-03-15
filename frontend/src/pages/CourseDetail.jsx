@@ -92,10 +92,7 @@ const data = await verifyRes.json()
 
 if(data.status === "success"){
 
-await enrollCourse({
-user_id:userId,
-course_id:id
-})
+await enrollCourse(id, token)
 
 setPurchased(true)
 
@@ -134,7 +131,7 @@ user_id:userId,
 course_id:id
 }
 
-const res = await enrollCourse(data)
+const res = await enrollCourse(id, token)
 
 alert(res.message)
 
