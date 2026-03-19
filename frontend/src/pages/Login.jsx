@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { loginUser } from "../api/api";
 
@@ -88,7 +88,12 @@ className="bg-blue-500 w-full py-2 rounded hover:bg-blue-600"
 >
 Login
 </button>
-
+<p className="text-center mt-4 text-gray-300">
+Don't have an account?{" "}
+<Link to="/register" className="text-blue-400 hover:underline">
+Register here
+</Link>
+</p>
 </form>
 
 </div>
